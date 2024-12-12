@@ -1,5 +1,8 @@
+"""Para comprobar la veracidad de cada una de las pruebas se debe usar el siguiente comando y aplicarlo en la terminal con ruta correspondiente al archivo test_ocho_reinas.py:"
+        pytest -v
+"""
+
 import pytest
-import time
 from Ocho_Reinas import valida, mostrar, reinas
 
 def test_soluciones_ocho_reinas():
