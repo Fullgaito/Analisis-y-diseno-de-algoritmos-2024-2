@@ -1,67 +1,79 @@
-import itertools
+from itertools import permutations
 import time
 
-def brute_force_eight_queens():
-    """Solve the eight queens problem using brute force."""
+def is_valid(board):
+    if any(queen < 0 for queen in board):  # Verificar si hay índices negativos
+        raise ValueError("Negative indices are invalid")
+
+    n = len(board)
+    # Validación de las reinas (verificar diagonales, filas, etc.)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if board[i] == board[j] or abs(board[i] - board[j]) == abs(i - j):
+                return False
+    return True
+
+def solve_eight_queens():
+    """Encuentra todas las soluciones posibles al problema estándar de 8 reinas."""
     n = 8
     solutions = []
-    total_checked = 0
-
-    # Generate all permutations of 8 positions (0 to 7)
-    for perm in itertools.permutations(range(n)):
-        total_checked += 1
-        # Check if the permutation satisfies the diagonal constraints
-        if all(abs(perm[i] - perm[j]) != abs(i - j) for i in range(n) for j in range(i + 1, n)):
+    total = 0
+    for perm in permutations(range(n)):
+        total += 1
+        if is_valid(perm):
             solutions.append(perm)
-
-    return solutions, total_checked
+    return solutions, total
 
 def backtracking_eight_queens():
-    """Solve the eight queens problem using backtracking."""
+    """Resuelve el problema de las ocho reinas utilizando backtracking."""
     n = 8
     solutions = []
     total_checked = 0
 
-    def is_valid(board, row, col):
-        # Check if placing a queen at (row, col) is valid
-        for i in range(row):
-            if board[i] == col or abs(board[i] - col) == abs(i - row):
+    def valida(tabla, fila, columna):
+        """Valida si es seguro colocar una reina en tabla[fila][columna]."""
+        for i in range(fila):
+            if tabla[i] == columna or abs(tabla[i] - columna) == abs(i - fila):
                 return False
         return True
 
-    def solve(row, board):
+    def reinas(tabla, fila):
+        """Encuentra todas las soluciones del problema de las N reinas."""
         nonlocal total_checked
-        if row == n:
-            solutions.append(board[:])
+        if fila == n:
+            solutions.append(tabla[:]) 
             return
-
-        for col in range(n):
+        for columna in range(n):
             total_checked += 1
-            if is_valid(board, row, col):
-                board[row] = col
-                solve(row + 1, board)
-                board[row] = -1
+            if valida(tabla, fila, columna):
+                tabla[fila] = columna
+                reinas(tabla, fila + 1)
+                tabla[fila] = -1
 
-    solve(0, [-1] * n)
+    # Inicialización
+    tabla = [-1] * n
+    reinas(tabla, 0)
+
     return solutions, total_checked
 
-# Measure time and run brute force
+
 start_time = time.time()
-brute_force_solutions, brute_force_checked = brute_force_eight_queens()
+brute_force_solutions, brute_force_checked = solve_eight_queens()
 brute_force_time = time.time() - start_time
 
-# Measure time and run backtracking
+
 start_time = time.time()
 backtracking_solutions, backtracking_checked = backtracking_eight_queens()
 backtracking_time = time.time() - start_time
 
-# Print results
-print("Brute Force:")
-print(f"  Solutions Found: {len(brute_force_solutions)}")
-print(f"  Configurations Checked: {brute_force_checked}")
-print(f"  Time Taken: {brute_force_time:.6f} seconds")
 
-print("\nBacktracking:")
-print(f"  Solutions Found: {len(backtracking_solutions)}")
-print(f"  Configurations Checked: {backtracking_checked}")
-print(f"  Time Taken: {backtracking_time:.6f} seconds")
+print("Fuerza Bruta:")
+print(f"Soluciones encontradas: {len(brute_force_solutions)}")
+print(f"Configuraciones posibles: {brute_force_checked}")
+print(f"Tiempo tomado: {brute_force_time:.6f} seconds")
+
+print()
+print("Backtracking:")
+print(f"Soluciones encontradas: {len(backtracking_solutions)}")
+print(f"Configuraciones posibles: {backtracking_checked}")
+print(f"Tiempo tomado: {backtracking_time:.6f} seconds")
