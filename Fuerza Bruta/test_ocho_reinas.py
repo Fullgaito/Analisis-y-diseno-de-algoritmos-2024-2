@@ -3,6 +3,7 @@
 """
 
 import pytest
+import time
 from Ocho_Reinas import valida, mostrar, reinas
 
 def test_soluciones_ocho_reinas():
@@ -149,3 +150,25 @@ def test_numero_de_reinas(m,expected):
         # Contar cuántas "Q" hay en la solución
         total_reinas = sum(fila.count("Q") for fila in solucion)
         assert total_reinas == expected
+
+@pytest.mark.parametrize(
+    "n,tiempo_limite",
+    [
+        (4, 0.1),  # Tablero 4x4, debería resolverse muy rápido
+        (6, 0.5),  # Tablero 6x6, toma un poco más de tiempo
+        (8, 1.0),  # Tablero 8x8, dentro de 1 segundo
+    ]
+)
+def test_tiempo_ejecucion_aproximado(n, tiempo_limite):
+    """
+    Verifica que el algoritmo resuelva tableros de diferentes tamaños
+    dentro de tiempos razonables.
+    """
+    tabla=[None] * n
+    start_time = time.time()
+    soluciones = reinas(tabla, 0, n)
+    tiempo_ejecucion = time.time() - start_time
+
+    # Comprueba que el tiempo esté dentro del límite definido para el tamaño actual
+    assert tiempo_ejecucion <= tiempo_limite
+        
