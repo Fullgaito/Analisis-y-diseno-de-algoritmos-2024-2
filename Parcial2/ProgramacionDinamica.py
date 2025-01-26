@@ -1,4 +1,4 @@
-import time
+#Memorizacion
 
 def caminos(i, j, p, q, n, memo):
     # Verificamos si ya se calculó el valor para esta celda
@@ -36,11 +36,11 @@ n = 5
 p, q = 1, 3
 memo = {}
 
-start_time = time.time()
+
 resultados = caminos(0, 0, p, q, n, memo)
-tiempo_ejecucion = time.time() - start_time
+
 
 print(f"El número de caminos desde <0,0> hasta <{p, q}> son {len(resultados)}")
 for camino in resultados:
     print(camino)
-print(f"De esta forma para llegar desde <0,0> hasta <{p, q}> hay {len(resultados)} caminos en {tiempo_ejecucion}")
+print(f"De esta forma para llegar desde <0,0> hasta <{p, q}> hay {len(resultados)} caminos")

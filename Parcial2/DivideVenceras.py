@@ -1,4 +1,4 @@
-import time
+#Divide y Venceras
 
 def caminos(i, j, p, q, n, camino=[]):
     if i == p and j == q:
@@ -24,11 +24,11 @@ def caminos(i, j, p, q, n, camino=[]):
 n = 5
 p, q = 1, 3
 
-start_time = time.time()
+
 resultados = caminos(0, 0, p, q, n, [])
-tiempo_ejecucion = time.time() - start_time
+
 
 print(f"El número de caminos desde <0,0> hasta <{p,q}> son {len(resultados)}")
 for camino in resultados:
     print(camino)
-print(f"De esta forma para llegar desde <0,0> hasta <{p,q}> hay {len(resultados)} caminos en {tiempo_ejecucion}")
+print(f"De esta forma para llegar desde <0,0> hasta <{p,q}> hay {len(resultados)} caminos")
