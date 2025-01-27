@@ -5,6 +5,8 @@ def caminos_iterativo(i, j, p, q, n):
     # Matriz para almacenar los caminos posibles
     dp = [[[] for _ in range(n+1)] for _ in range(n+1)]
     
+    if p > n or q > n:
+        return []
     # Cola para el recorrido
     cola = deque([(i, j, [(i, j)])])
 
@@ -14,6 +16,9 @@ def caminos_iterativo(i, j, p, q, n):
         # Si alcanzamos el punto objetivo, almacenamos el camino
         if (x, y) == (p, q):
             dp[x][y].append(camino)
+        
+        if x < 0 or y < 0 or x > n or y > n:
+            continue
 
         # Movimientos posibles
         if x + 1 <= n:  # Movimiento hacia abajo
